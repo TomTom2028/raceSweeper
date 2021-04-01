@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import { Input } from '@angular/core';
-import { SquareSquareInfo } from './square-square-info';
+import { SquareInfo } from './square-info';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-square',
@@ -9,11 +10,12 @@ import { SquareSquareInfo } from './square-square-info';
 })
 export class SquareComponent implements OnInit {
 
-  @Input() val: SquareSquareInfo;
+  @Input() val: any;
 
-  constructor() { }
+  constructor(public platform: Platform) {
+  }
 
-
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
 }

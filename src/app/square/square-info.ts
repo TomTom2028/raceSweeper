@@ -1,4 +1,4 @@
-export interface SquareSquareInfo {
+export interface SquareInfo {
   x: number;
   y: number;
 

@@ -1,4 +1,15 @@
+#contentWrapper{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
-.square{
+#gameBoardWrapper{
+  overflow: hidden;
+  flex-grow: 1;
+}
 
+app-game-board{
+  height: 99%;
+  display: block;
 }

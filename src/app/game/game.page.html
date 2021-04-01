@@ -4,6 +4,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <app-game-board></app-game-board>
+<ion-content [fullscreen]="true">
+  <div id="contentWrapper">
+    <ion-button (click)="render = true">Click</ion-button>
+    <div id="gameBoardWrapper" #gameBoardWrapper>
+      <app-game-board *ngIf="render" [val]="{squareX: 10, squareY: 10, numBombs: 2, sizingRef: gameBoardWrapper}">
+      </app-game-board>
+    </div>
+  </div>
+
+
 </ion-content>
