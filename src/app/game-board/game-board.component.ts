@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { GameBoardInfo } from './game-board-info';
-import { Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {GameBoardInfo} from './game-board-info';
 import {SquareInfo} from '../square/square-info';
-import { Platform } from '@ionic/angular';
+import {Platform} from '@ionic/angular';
+import {SquareStatus} from '../square/square-status.enum';
 
 @Component({
   selector: 'app-game-board',
@@ -32,16 +32,34 @@ export class GameBoardComponent implements OnInit {
 
 
   generateBoard(): void{
-    this.board = [];
+    const tempArr = [];
     for (let i = 0; i < this.val.squareY; i++)
     {
       const row: SquareInfo[] = [];
       for (let j = 0; j < this.val.squareX; j++)
       {
-        row.push({x: j, y: i, boardWidth: this.val.squareX, boardHeight: this.val.squareY, hasBomb: false});
+        row.push({x: j, y: i, boardWidth: this.val.squareX, boardHeight: this.val.squareY, hasBomb: false, status: SquareStatus.HIDDEN});
       }
-      this.board.push(row);
+      tempArr.push(row);
     }
+
+    // now gen the bombs
+    let bombLeft = this.val.numBombs;
+
+    while (bombLeft > 0)
+    {
+      const tempI = Math.floor(Math.random() * this.val.squareY);
+      const tempJ = Math.floor(Math.random() * this.val.squareX);
+
+      if (!tempArr[tempI][tempJ].hasBomb)
+      {
+        tempArr[tempI][tempJ].hasBomb = true;
+        bombLeft--;
+      }
+    }
+
+    this.board = tempArr;
+
   }
 
   private calculateSquareSize() {
@@ -50,8 +68,6 @@ export class GameBoardComponent implements OnInit {
 
     this.squareSize = maxWidth > maxHeight ? maxHeight : maxWidth;
   }
-
-
 
 
 }
