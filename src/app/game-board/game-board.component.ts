@@ -1,8 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GameBoardInfo} from './game-board-info';
 import {SquareInfo} from '../square/square-info';
 import {Platform} from '@ionic/angular';
 import {SquareStatus} from '../square/square-status.enum';
+import {GameStatus} from '../game/game-status.enum';
 
 @Component({
   selector: 'app-game-board',
@@ -12,14 +13,16 @@ import {SquareStatus} from '../square/square-status.enum';
 export class GameBoardComponent implements OnInit {
 
   board: SquareInfo[][];
-
   squareSize: number;
+
+  gameStarted = false;
+
+  @Output() gameStatusEvent = new EventEmitter <GameStatus>();
+
 
   @Input() val: GameBoardInfo;
 
-
   constructor(private platform: Platform) {
-    this.squareSize = 1;
     this.platform.resize.subscribe(async () => {
       this.calculateSquareSize();
     });
@@ -28,6 +31,40 @@ export class GameBoardComponent implements OnInit {
   ngOnInit() {
     this.generateBoard();
     this.calculateSquareSize();
+  }
+
+  async onLeftClick(square) {
+    if (!this.gameStarted)
+    {
+      this.gameStarted = true;
+      this.gameStatusEvent.emit(GameStatus.GAMESTART);
+    }
+
+    square.setSquareStatus(SquareStatus.BOMB);
+
+  }
+
+  onRightClick(square): boolean {
+    if (!this.gameStarted)
+    {
+      this.gameStarted = true;
+      this.gameStatusEvent.emit(GameStatus.GAMESTART);
+    }
+
+    if (square.getSquareStatus() === SquareStatus.HIDDEN)
+    {
+      square.setSquareStatus(SquareStatus.FLAGGED);
+      this.gameStatusEvent.emit(GameStatus.FLAGADD);
+    }
+    else
+    {
+      if (square.getSquareStatus() === SquareStatus.FLAGGED)
+      {
+        square.setSquareStatus(SquareStatus.HIDDEN);
+        this.gameStatusEvent.emit(GameStatus.FLAGDEL);
+      }
+    }
+    return false;
   }
 
 
@@ -68,6 +105,4 @@ export class GameBoardComponent implements OnInit {
 
     this.squareSize = maxWidth > maxHeight ? maxHeight : maxWidth;
   }
-
-
 }

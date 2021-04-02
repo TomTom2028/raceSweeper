@@ -6,9 +6,14 @@
 
 <ion-content [fullscreen]="true">
   <div id="contentWrapper">
-    <ion-button (click)="render = true">Click</ion-button>
+    <div id="gameHeader">
+      <div id="timePart">Time: {{timerVal}}</div>
+      <div id="numBombsPart">Number of bombs: {{numBombsLeft}}</div>
+    </div>
     <div id="gameBoardWrapper" #gameBoardWrapper>
-      <app-game-board *ngIf="render" [val]="{squareX: 10, squareY: 10, numBombs: 2, sizingRef: gameBoardWrapper}">
+      <app-game-board *ngIf="render"
+                      (gameStatusEvent)="doOnStatusUpdate($event)"
+                      [val]="{squareX: 16, squareY: 16, numBombs: startingBombs, sizingRef: gameBoardWrapper}">
       </app-game-board>
     </div>
   </div>

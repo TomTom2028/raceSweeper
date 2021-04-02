@@ -1,7 +1,9 @@
 <div class="grid-wrapper">
   <div class="grid">
     <div class="row" *ngFor="let row of board;">
-      <app-square *ngFor="let square of row" [val]="square" [style.width.px]="squareSize"
+      <app-square #thisSquare (click)="onLeftClick(thisSquare)" (contextmenu)="onRightClick(thisSquare)" *ngFor="let square of row"
+                  [val]="square"
+                  [style.width.px]="squareSize"
                   [style.height.px]="squareSize"></app-square>
     </div>
   </div>

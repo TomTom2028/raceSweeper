@@ -9,30 +9,40 @@ import {SquareStatus} from './square-status.enum';
   templateUrl: './square.component.html',
   styleUrls: ['./square.component.scss'],
 })
-export class SquareComponent implements OnInit {
+export class SquareComponent implements OnChanges, OnInit {
 
   @Input() val: SquareInfo;
 
   squareText: string;
   squareClass: string;
 
-
   constructor(public platform: Platform) {
   }
 
   ngOnInit() {
+
+  }
+
+  ngOnChanges() {
+    console.log(this.val);
     this.setSquareStatus(this.val.status);
   }
 
+  public getSquareStatus(): SquareStatus {
+    return this.val.status;
+  }
+
+
   public setSquareStatus(status: SquareStatus) {
+    this.val.status = status;
     switch (status) {
       case SquareStatus.HIDDEN:
-        this.squareText = "";
+        this.squareText = " ";
         this.squareClass = "sq-hidden";
         break;
 
       case SquareStatus.EMPTY:
-        this.squareText = "";
+        this.squareText = " ";
         this.squareClass = "sq-empty";
         break;
 
