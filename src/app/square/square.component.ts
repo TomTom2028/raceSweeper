@@ -32,6 +32,18 @@ export class SquareComponent implements OnChanges, OnInit {
     return this.val.status;
   }
 
+  public hasBomb(): boolean {
+    return this.val.hasBomb;
+  }
+
+  public getX(): number {
+    return this.val.x;
+  }
+
+  public getY(): number {
+    return this.val.y;
+  }
+
 
   public setSquareStatus(status: SquareStatus) {
     this.val.status = status;
