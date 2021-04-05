@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <app-modal *ngIf="renderModal" (closeEvent)="renderModal=false" modalText="U lost or somehting like that"></app-modal>
   <div id="contentWrapper">
     <div id="gameHeader">
       <div id="timePart">Time: {{timerVal}}</div>

@@ -9,6 +9,7 @@ import { GamePageRoutingModule } from './game-routing.module';
 import { GamePage } from './game.page';
 import {GameBoardComponent} from '../game-board/game-board.component';
 import {SquareComponent} from '../square/square.component';
+import {ModalComponent} from '../modal/modal.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import {SquareComponent} from '../square/square.component';
     IonicModule,
     GamePageRoutingModule
   ],
-  declarations: [GamePage, GameBoardComponent, SquareComponent]
+    declarations: [GamePage, GameBoardComponent, SquareComponent, ModalComponent]
 })
 export class GamePageModule {}

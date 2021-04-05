@@ -8,7 +8,6 @@ import {GameStatus} from './game-status.enum';
 })
 export class GamePage implements  AfterViewChecked, OnDestroy {
   render = false;
-
   doNgAfterViewChecked = true;
 
   secondsTimer: any;
@@ -17,6 +16,9 @@ export class GamePage implements  AfterViewChecked, OnDestroy {
 
   numBombsLeft = 40;
   startingBombs: number;
+
+  renderModal = true;
+
 
   @ViewChild('gameBoardWrapper') gameBoardWrapper;
 
@@ -51,6 +53,9 @@ export class GamePage implements  AfterViewChecked, OnDestroy {
           this.timerVal++;
         }, 1000);
         break;
+
+      case GameStatus.GAMEWON:
+
 
       case GameStatus.FLAGADD:
         this.numBombsLeft--;
