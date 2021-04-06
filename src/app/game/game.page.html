@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <app-modal *ngIf="renderModal" (closeEvent)="renderModal=false" modalText="U lost or somehting like that"></app-modal>
+  <app-modal *ngIf="renderModal" (closeEvent)="renderModal=false" modalText="{{modalText}}"></app-modal>
   <div id="contentWrapper">
     <div id="gameHeader">
       <div id="timePart">Time: {{timerVal}}</div>
@@ -14,7 +14,7 @@
     <div id="gameBoardWrapper" #gameBoardWrapper>
       <app-game-board *ngIf="render"
                       (gameStatusEvent)="doOnStatusUpdate($event)"
-                      [val]="{squareX: 16, squareY: 16, numBombs: startingBombs, sizingRef: gameBoardWrapper}">
+                      [val]="{squareX: width, squareY: height, numBombs: startingBombs, sizingRef: gameBoardWrapper}">
       </app-game-board>
     </div>
   </div>

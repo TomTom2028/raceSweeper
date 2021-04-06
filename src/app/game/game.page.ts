@@ -14,11 +14,15 @@ export class GamePage implements  AfterViewChecked, OnDestroy {
 
   timerVal = 0;
 
-  numBombsLeft = 40;
+  width = 3;
+  height = 3;
+  numBombsLeft = 2;
+
+
   startingBombs: number;
 
-  renderModal = true;
-
+  renderModal = false;
+  modalText = "";
 
   @ViewChild('gameBoardWrapper') gameBoardWrapper;
 
@@ -55,7 +59,16 @@ export class GamePage implements  AfterViewChecked, OnDestroy {
         break;
 
       case GameStatus.GAMEWON:
+        clearInterval(this.secondsTimer);
+        this.modalText = "You won!!";
+        this.renderModal = true;
+        break;
 
+      case GameStatus.GAMELOST:
+        clearInterval(this.secondsTimer);
+        this.modalText = "You lost :-(";
+        this.renderModal = true;
+        break;
 
       case GameStatus.FLAGADD:
         this.numBombsLeft--;

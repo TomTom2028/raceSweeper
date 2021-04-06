@@ -5,6 +5,7 @@ import {Platform} from '@ionic/angular';
 import {SquareStatus} from '../square/square-status.enum';
 import {GameStatus} from '../game/game-status.enum';
 import {SquareComponent} from '../square/square.component';
+import has = Reflect.has;
 
 @Component({
   selector: 'app-game-board',
@@ -53,6 +54,8 @@ export class GameBoardComponent implements OnInit {
       if (square.getSquareStatus() === SquareStatus.BOMB)
       {
         console.log("u lost");
+        this.gameStatusEvent.emit(GameStatus.GAMELOST);
+        this.unccoverAllSquares();
       }
     }
   }
@@ -66,7 +69,36 @@ export class GameBoardComponent implements OnInit {
 
     this.flagSquare(square);
 
+    if (this.playerHasWon())
+    {
+      this.gameStatusEvent.emit(GameStatus.GAMEWON);
+    }
+
     return false;
+  }
+
+
+  playerHasWon(): boolean {
+    // go trough each flagged square
+    let hasWon = true;
+
+    this.squares.forEach(square => {
+      if (hasWon)
+      {
+        if (square.getSquareStatus() === SquareStatus.HIDDEN && square.hasBomb())
+        {
+          hasWon = false;
+          return;
+        }
+        if (square.getSquareStatus() === SquareStatus.FLAGGED && !square.hasBomb())
+        {
+          hasWon = false;
+          return;
+        }
+      }
+    });
+
+    return hasWon;
   }
 
 
@@ -99,8 +131,10 @@ export class GameBoardComponent implements OnInit {
         return false;
       }
 
-      // We only need to check squares that are not uncovered yet
-      if (sq.getSquareStatus() !== SquareStatus.HIDDEN)
+      // We only need to check squares that are not uncovered yet and squares that are flagged.
+      // Bomb check is for when we hit a bomb, we still want to include it. (edge case for uncovering everything
+      if (!(sq.getSquareStatus() === SquareStatus.HIDDEN || sq.getSquareStatus() === SquareStatus.FLAGGED ||
+        sq.getSquareStatus() === SquareStatus.BOMB))
       {
         return false;
       }
@@ -144,6 +178,14 @@ export class GameBoardComponent implements OnInit {
       toCheckSquares.forEach(thisSquare => this.uncoverSquare(thisSquare));
     }
 
+  }
+
+
+  unccoverAllSquares()
+  {
+    this.squares.forEach(square => {
+      this.uncoverSquare(square);
+    });
   }
 
 
@@ -202,6 +244,8 @@ export class GameBoardComponent implements OnInit {
 
     this.board = tempArr;
 
+    this.printGrid();
+
   }
 
   private calculateSquareSize() {
@@ -209,5 +253,16 @@ export class GameBoardComponent implements OnInit {
     const maxHeight = this.val.sizingRef.offsetHeight  / this.val.squareX;
 
     this.squareSize = maxWidth > maxHeight ? maxHeight : maxWidth;
+  }
+
+  private printGrid() {
+    let outStr = "";
+    this.board.forEach(row => {
+      row.forEach(sq => {
+        outStr += (sq.hasBomb ? 'B' : '0' ) +  " ";
+      });
+      outStr += '\n';
+    });
+    console.log(outStr);
   }
 }

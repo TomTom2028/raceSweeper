@@ -1,3 +1,20 @@
+<ion-menu side="start" menuId="first" contentId="main">
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Start menu</ion-title>
+  </ion-toolbar>
+</ion-header>
+  <ion-content id="main">
+    <ion-list>
+      <ion-item>Item1</ion-item>
+      <ion-item>Item2</ion-item>
+      <ion-item>Item3</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+
+
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
@@ -7,6 +24,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-button (click)="this.menu.enable(true, 'first'); this.menu.open('first');">Open menu</ion-button>
   <ion-button (click)="this.router.navigate(['game'])">Play</ion-button>
   <ion-button>Leaderboard</ion-button>
 </ion-content>
